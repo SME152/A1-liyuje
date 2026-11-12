@@ -1,0 +1,306 @@
+Console output of 'java -cp bin AssignmentOne' (JDK 21, Windows)
+
+========================================================================
+ PROG2004 Object Oriented Programming - Assessment 1
+ Appointment system for a health service
+ Li Yuje
+========================================================================
+
+ This program builds the object model for an appointment system and
+ demonstrates it. There is no user input and no data is saved: the main
+ method plays the part of the users and prints what happens.
+
+ 9 health professionals of 5 different types and 4 patients have been created.
+
+========================================================================
+ PART 1 & 2 - VALIDATION AND ENCAPSULATION
+ Invalid objects must be impossible
+========================================================================
+  Each constructor checks its arguments and refuses to create a broken
+  object. The attempts below are all rejected:
+
+    - identifier with letters  -> A health professional's identifier must contain numbers only, but was "GP-1001".
+    - blank name               -> A health professional name must not be blank.
+    - unknown shift            -> A shift must be Morning, Evening or Night, but was "Afternoon".
+    - impossible time          -> Minute must be between 0 and 59 but was 75.
+    - invalid phone number     -> A patient's mobile phone number must be 10 digits, for example 0412345678, but was "0412-ABC".
+    - appointment without a patient -> An appointment must have a patient.
+
+  The data itself is private and has no setters, so it cannot be changed
+  after creation. getAvailableDays() returns a copy, so this cannot corrupt it:
+    - days after clearing the returned copy -> Mon, Wed, Fri (unchanged)
+
+========================================================================
+ PART 3 - WORKING WITH HEALTH PROFESSIONAL OBJECTS
+ One collection, one loop, many types
+========================================================================
+
+  1. The full details of every professional, printed through the shared type
+----------------------------------------------------------------------
+  Role        : General Practitioner
+  ID          : 1001
+  Name        : Dr Amina Haddad
+  Works       : Mon, Wed, Fri
+  Room        : Room 3
+  New patients: yes
+  Duty        : prescribes medication, orders tests and refers patients to specialists
+
+----------------------------------------------------------------------
+  Role        : General Practitioner
+  ID          : 1002
+  Name        : Dr Ben Okafor
+  Works       : Mon, Tue, Wed, Thu
+  Room        : Room 5
+  New patients: no
+  Duty        : prescribes medication, orders tests and refers patients to specialists
+
+----------------------------------------------------------------------
+  Role        : General Practitioner
+  ID          : 1003
+  Name        : Dr Claire Nguyen
+  Works       : Mon, Tue
+  Room        : Room 1
+  New patients: yes
+  Duty        : prescribes medication, orders tests and refers patients to specialists
+
+----------------------------------------------------------------------
+  Role        : Surgeon
+  ID          : 2001
+  Name        : Dr Dmitri Volkov
+  Works       : Mon, Wed, Fri
+  Specialty   : Orthopaedic surgery
+  Theatre     : Theatre 2
+  Duty        : performs surgical procedures in an operating theatre
+
+----------------------------------------------------------------------
+  Role        : Surgeon
+  ID          : 2002
+  Name        : Dr Elena Rossi
+  Works       : Mon, Tue, Wed, Thu, Fri
+  Specialty   : Cardiothoracic surgery
+  Theatre     : Theatre 1
+  Duty        : performs surgical procedures in an operating theatre
+
+----------------------------------------------------------------------
+  Role        : Nurse
+  ID          : 3001
+  Name        : Grace Mbeki
+  Works       : Mon, Tue, Wed, Thu, Fri
+  Ward        : Ward 4B
+  Shift       : Morning
+  Duty        : monitors patients, takes blood samples and manages care
+
+----------------------------------------------------------------------
+  Role        : Nurse
+  ID          : 3002
+  Name        : Hassan Ali
+  Works       : Tue, Wed, Thu, Fri, Sat
+  Ward        : Ward 2A
+  Shift       : Evening
+  Duty        : monitors patients, takes blood samples and manages care
+
+----------------------------------------------------------------------
+  Role        : Dietitian
+  ID          : 4001
+  Name        : Irene Costa
+  Works       : Mon, Tue, Thu
+  Focus       : Diabetes management
+  Consult     : 45 minutes
+  Duty        : assesses nutrition and designs meal plans for patients
+
+----------------------------------------------------------------------
+  Role        : Physiotherapist
+  ID          : 5001
+  Name        : Jack Wilson
+  Works       : Mon, Wed, Fri
+  Area        : Sports injuries
+  Sessions    : 5 per week
+  Duty        : runs rehabilitation sessions to restore movement and strength
+
+----------------------------------------------------------------------
+
+  2. The same collection sorted by name (the shared type implements Comparable)
+    Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+    Dr Ben Okafor - General Practitioner (ID 1002), works Mon, Tue, Wed, Thu
+    Dr Claire Nguyen - General Practitioner (ID 1003), works Mon, Tue
+    Dr Dmitri Volkov - Surgeon (ID 2001), works Mon, Wed, Fri
+    Dr Elena Rossi - Surgeon (ID 2002), works Mon, Tue, Wed, Thu, Fri
+    Grace Mbeki - Nurse (ID 3001), works Mon, Tue, Wed, Thu, Fri
+    Hassan Ali - Nurse (ID 3002), works Tue, Wed, Thu, Fri, Sat
+    Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+    Jack Wilson - Physiotherapist (ID 5001), works Mon, Wed, Fri
+
+  3. One method call, a different answer from each type (polymorphism)
+    - Dr Amina Haddad (General Practitioner) prescribes medication, orders tests and refers patients to specialists.
+    - Dr Ben Okafor (General Practitioner) prescribes medication, orders tests and refers patients to specialists.
+    - Dr Claire Nguyen (General Practitioner) prescribes medication, orders tests and refers patients to specialists.
+    - Dr Dmitri Volkov (Surgeon, Orthopaedic surgery) performs surgical procedures in an operating theatre.
+    - Dr Elena Rossi (Surgeon, Cardiothoracic surgery) performs surgical procedures in an operating theatre.
+    - Grace Mbeki (Nurse, Ward 4B) monitors patients, takes blood samples and manages care.
+    - Hassan Ali (Nurse, Ward 2A) monitors patients, takes blood samples and manages care.
+    - Irene Costa (Dietitian, Diabetes management) assesses nutrition and designs meal plans for patients.
+    - Jack Wilson (Physiotherapist, Sports injuries) runs rehabilitation sessions to restore movement and strength.
+
+  Adding a sixth type of professional would need one new class only: this
+  loop and every other loop over the shared type would stay unchanged.
+
+  4. Behaviour that belongs to one specialty only
+    - Dr Amina Haddad (General Practitioner) in Room 3 prescribed amoxicillin, 500 mg three times a day, to Wei Chen.
+    - Dr Dmitri Volkov (Surgeon) performed a knee reconstruction on Wei Chen in theatre 2.
+    - Grace Mbeki (Nurse) took a blood sample from Wei Chen on Ward 4B during the Morning shift.
+    - Irene Costa (Dietitian) prepared a 8500 kJ meal plan for Wei Chen focused on diabetes management.
+    - Jack Wilson (Physiotherapist) ran a rehabilitation session on knee extension with Wei Chen.
+
+  5. Identity: equals() and hashCode() compare identifiers, not references
+    - gp.equals(same ID held in another object) -> true
+    - their hash codes are equal                -> true
+    - gp.equals(a different professional)       -> false
+
+  This is what lets the appointment system decide whether two appointments are
+  for the same health professional.
+
+========================================================================
+ PART 4 - MODELLING AN APPOINTMENT
+ A patient, any professional, one time
+========================================================================
+  An appointment printed with System.out.println(appointment):
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+
+  The appointment holds a HealthProfessional reference, so the very same class
+  also accepts a surgeon, a nurse and any type added in the future:
+  11:30  Wei Chen (mobile 0412345678)
+       with Dr Dmitri Volkov - Surgeon (ID 2001), works Mon, Wed, Fri
+
+  Ordering by time (Appointment implements Comparable)
+    - 08:30 compared with 09:00 -> -1 (negative, so the 08:30 appointment sorts first)
+    - 09:00 with GP 1001 compared with 09:00 with surgeon 2001 -> -1 (the same time, so the professional ID breaks the tie and sorting stays consistent)
+
+========================================================================
+ PART 5 & 6 - MANAGING AND WORKING WITH APPOINTMENTS
+ Add, view, filter, sort and cancel
+========================================================================
+  Monday, 08:00-16:00, 30 minute appointments, 16 slots per day (latest appointment 15:30), 0 appointments booked
+
+  A. Adding appointments across the different types of professional
+    [OK]       09:00 - Wei Chen with Dr Amina Haddad (General Practitioner)
+    [OK]       09:30 - Maria Lopez with Dr Dmitri Volkov (Surgeon)
+    [OK]       10:00 - Sam Patel with Grace Mbeki (Nurse)
+    [OK]       08:00 - Wei Chen with Irene Costa (Dietitian)
+    [OK]       11:30 - Aiko Tanaka with Dr Ben Okafor (General Practitioner)
+    [OK]       14:00 - Maria Lopez with Jack Wilson (Physiotherapist)
+
+  B. Operations that must be rejected, each answered with a warning
+    [WARNING]  Dr Amina Haddad is already booked at 09:00 on Monday. A professional cannot be double booked.
+    [WARNING]  09:15 is not a clinic time slot. The clinic runs 08:00-16:00, 30 minute appointments, 16 slots per day (latest appointment 15:30).
+    [WARNING]  Hassan Ali does not work on Monday (available Tue, Wed, Thu, Fri, Sat).
+    [WARNING]  A booking needs a patient, a health professional and a time.
+    [WARNING]  A booking needs a patient, a health professional and a time.
+
+  C. Every appointment on the day, earliest first
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+
+  09:30  Maria Lopez (mobile 0423456789)
+       with Dr Dmitri Volkov - Surgeon (ID 2001), works Mon, Wed, Fri
+
+  10:00  Sam Patel (mobile 0434567890)
+       with Grace Mbeki - Nurse (ID 3001), works Mon, Tue, Wed, Thu, Fri
+
+  11:30  Aiko Tanaka (mobile 0445678901)
+       with Dr Ben Okafor - General Practitioner (ID 1002), works Mon, Tue, Wed, Thu
+
+  14:00  Maria Lopez (mobile 0423456789)
+       with Jack Wilson - Physiotherapist (ID 5001), works Mon, Wed, Fri
+    (6 appointments)
+
+  D. Filtering by health professional ID (2001, then an unused ID)
+  09:30  Maria Lopez (mobile 0423456789)
+       with Dr Dmitri Volkov - Surgeon (ID 2001), works Mon, Wed, Fri
+    (1 appointment)
+    A filter for an ID that has no bookings returns an empty list, not an
+    error:
+    (no appointments)
+
+  E. Filtering by patient mobile phone (Wei Chen, 0412345678)
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+    (2 appointments)
+
+  F. Sorting a filtered subset (the same appointments, reversed, then sorted)
+    Before sorting:
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+    (2 appointments)
+    After manager.sortByTime(...):
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+    (2 appointments)
+
+  G. Cancelling by health professional ID and appointment time
+    [OK]       Cancelled 09:30 - Maria Lopez with Dr Dmitri Volkov (Surgeon).
+    [WARNING]  No appointment found for professional ID "2001" at 09:30 on Monday. Nothing was cancelled.   <- the same appointment a second time
+    [WARNING]  Cannot cancel: A time must be written as HH:mm, for example 09:30, but was "half past nine".   <- the time is not HH:mm text
+
+  H. The day after the cancellation
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+
+  10:00  Sam Patel (mobile 0434567890)
+       with Grace Mbeki - Nurse (ID 3001), works Mon, Tue, Wed, Thu, Fri
+
+  11:30  Aiko Tanaka (mobile 0445678901)
+       with Dr Ben Okafor - General Practitioner (ID 1002), works Mon, Tue, Wed, Thu
+
+  14:00  Maria Lopez (mobile 0423456789)
+       with Jack Wilson - Physiotherapist (ID 5001), works Mon, Wed, Fri
+    (5 appointments)
+
+  I. Cancelling by patient mobile phone (Maria Lopez, 0423456789)
+    [OK]       Cancelled 1 appointment for mobile 0423456789:
+             - 14:00 - Maria Lopez with Jack Wilson (Physiotherapist)
+    [WARNING]  No appointment found for mobile 0423456789 on Monday. Nothing was cancelled.   <- nothing left to cancel
+
+  J. Final state of the clinic day
+  08:00  Wei Chen (mobile 0412345678)
+       with Irene Costa - Dietitian (ID 4001), works Mon, Tue, Thu
+
+  09:00  Wei Chen (mobile 0412345678)
+       with Dr Amina Haddad - General Practitioner (ID 1001), works Mon, Wed, Fri
+
+  10:00  Sam Patel (mobile 0434567890)
+       with Grace Mbeki - Nurse (ID 3001), works Mon, Tue, Wed, Thu, Fri
+
+  11:30  Aiko Tanaka (mobile 0445678901)
+       with Dr Ben Okafor - General Practitioner (ID 1002), works Mon, Tue, Wed, Thu
+    (4 appointments)
+    Monday, 08:00-16:00, 30 minute appointments, 16 slots per day (latest appointment 15:30), 4 appointments booked
+
+  K. What the clinic schedule means for booking a different day
+    A second manager can run 09:00-17:00 in 20 minute slots without any
+    change to the booking code: 09:00-17:00, 20 minute appointments, 24 slots per day (latest appointment 16:40)
+    [OK]       09:20 - Wei Chen with Dr Amina Haddad (General Practitioner)
+    [WARNING]  08:00 is not a clinic time slot. The clinic runs 09:00-17:00, 20 minute appointments, 24 slots per day (latest appointment 16:40).
+
+========================================================================
+ End of demonstration.
+ All four pillars are exercised: abstraction (HealthProfessional),
+ encapsulation (private validated fields), inheritance (the five
+ professional classes) and polymorphism (toString, performDuty and the
+ filters working through the shared types).
+========================================================================
