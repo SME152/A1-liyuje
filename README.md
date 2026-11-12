@@ -5,6 +5,7 @@
 **Student:** Li Yuje
 **Language:** Java (plain `src` folder, no external libraries)
 **Java version:** compiles with Java 8 or newer (developed and tested with JDK 21)
+**Repository:** <https://github.com/SME152/A1-liyuje>
 
 ---
 
@@ -190,8 +191,9 @@ number, the updated list, and a second clinic schedule.
 
 * [x] `src` contains every source file (13 classes) and the project compiles and runs.
 * [x] Zip the project folder as `A1-liyuje.zip`.
-* [ ] Push the project to a GitHub repository, with regular, descriptive commits over the
-      assessment period, and put the link in the submission comments.
+* [x] Push the project to a GitHub repository, with regular, descriptive commits over the
+      assessment period, and put the link in the submission comments:
+      <https://github.com/SME152/A1-liyuje> (public, so no collaborator invitation is needed).
 * [ ] Run WakaTime while working and attach the report/screenshot as
       `A1-liyuje-WakaTime.png`.
 * [ ] Record the short (max 5 minute) video explaining the four pillars, upload it to OneDrive
