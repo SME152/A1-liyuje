@@ -1,28 +1,7 @@
-GenAI declaration for PROG2004 Assessment 1 (Li Yuje)
-====================================================
+GenAI declaration - PROG2004 Assessment 1 (Li Yuje)
+===================================================
 
-Paste ONE of the two statements below into the submission comments, then check it is true for
-your submission. Do not paste both.
-
---------------------------------------------------------------------------------------------------
-If AI tools WERE used (this is the accurate statement for this submission)
---------------------------------------------------------------------------------------------------
 I acknowledge that I have used Generative AI tools to complete this assessment in accordance
-with the conditions outlined in the Assessment Brief. I used DeepSeek (the DSH coding
-assistant) to generate the initial class design and the Java source code together with its
-Javadoc and inline comments, and to compile and run the code to check that it works.
-
-Notes to keep the declaration accurate and defensible:
-* The Unit Assessor may ask you to explain any part of the code and how your use of the tool
-  complied with the brief. Read every class in src, run the program, and be ready to talk
-  through why each class exists and why the design decisions in README.md were made.
-* If you change, extend or rewrite parts of the code yourself, update the description of how
-  the tool was used so that it still describes what actually happened.
-* You must still record the video yourself, in your own words, explaining the four pillars of
-  OOP in this code. The brief does not allow a generated video, and the video is 10% of the
-  mark.
-
---------------------------------------------------------------------------------------------------
-If NO AI tools were used (only if that is actually true)
---------------------------------------------------------------------------------------------------
-I acknowledge that I have not knowingly used GenAI to complete this assessment.
+with the conditions outlined in the Assessment Brief. I used DeepSeek to generate the initial
+class design and the Java source code together with its Javadoc and inline comments, and to
+compile and run the code to check that it works.
